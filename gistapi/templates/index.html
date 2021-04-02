@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="mt-5 container">
+    <h1 class="text-primary">Gist Pattern Search '/api/v1/search'</h1>
+    <p>Please just enter the username and the pattern you are searching,
+        you will be displayed the found matches with the pattern highlighted.
+    </p>
+    <div class="row">
+        <hr>
+        <div class="col-md-4 col-sm-1">
+            <label class="mt-3" for="username">username</label>
+            <input id="username" type="text" value="stephansemerad" class="form-control form-control-sm" placeholder="username">
+            <label class="mt-3" for="pattern">pattern</label>
+            <textarea id="pattern" cols="30" rows="10" 
+            class="form-control form-control-sm" placeholder="pattern">import requests</textarea>
+            <button onclick="search()" class="mt-3 btn btn-sm btn-primary w-100 ">
+                search
+            </button>
+            <pre id="json" class="mt-2 text-primary" style="font-size: 15px; font-weight: bold;">
+        </div>
+        <div  class="col-md-6 col-sm-1">
+            <div id="content" class="mt-3">
+            </div>
+        </pre>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    search()
+    function search(){
+        document.getElementById('content').innerHTML = ''
+        let username = document.getElementById('username').value
+        let pattern  = document.getElementById('pattern').value
+        url = '/api/v1/search'
+        fetch(url,{
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+        method: "POST",
+        body: JSON.stringify({'username': username, 'pattern': pattern})
+        })
+        .then(response => {
+            console.log(response.status)
+            console.log(response)
+            return response.json()
+        })
+        .then(data => {
+            console.log(data)
+            let status = data.status
+            console.log(status)
+            if (status=='error') {
+                document.getElementById("content").innerHTML = '<div style="color: #F27A6F">'+data.message+'</div>'
+            } else {
+                let highlighted = data.highlighted
+                let element = document.getElementById("content")
+
+                for (i = 0; i < highlighted.length ; i++) {
+                   var key = Object.keys(highlighted[i])
+                    console.log(key[0])
+                    console.log(highlighted[i][key[0]])
+                    element.insertAdjacentHTML('beforeend', '<p>'+key[0]+'</p> <hr><p>'+highlighted[i][key[0]]+'</p>')
+                }
+
+                delete data['highlighted'];
+                document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 4);
+            }
+
+
+        })
+        .catch(function(error) {
+            console.log('error: ', error);
+            document.getElementById("content").innerHTML = '<div style="color: #F27A6F">Technical Error: '+error+'</div>'
+
+         });
+
+
+    } // end search  
+
+</script>
+{% endblock %}
