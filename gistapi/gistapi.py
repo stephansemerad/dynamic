@@ -23,7 +23,7 @@ db = SQLAlchemy(app)
 
 class Search(db.Model):
     id              = db.Column(db.Integer, primary_key = True)
-    raw_url         = db.Column(db.String(), unique = True, nullable = False)
+    raw_url         = db.Column(db.String(), nullable = False)
     username        = db.Column(db.String(), nullable = False)
     pattern         = db.Column(db.String(), nullable = False)
     gist_id         = db.Column(db.String(), nullable = False)
