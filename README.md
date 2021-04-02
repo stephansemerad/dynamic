@@ -33,3 +33,12 @@ docker run -p 8000:8000 flask-app
 # Via docker-compose
 docker-compose up
 ```
+
+
+# Screenshots showing its solved.
+
+![alt text](https://github.com/stephansemerad/dynamic/blob/master/gistapi/screenshots/front_end.PNG)
+
+![alt text](https://github.com/stephansemerad/dynamic/blob/master/gistapi/screenshots/front_end_user_justdionysus.PNG)
+
+![alt text](https://github.com/stephansemerad/dynamic/blob/master/gistapi/screenshots/post_from_request_test.PNG)
